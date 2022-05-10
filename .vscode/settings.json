@@ -1,0 +1,6 @@
+{
+    "java.project.sourcePaths": [
+        "step02_review/src",
+        "step01_basic/src/step01/syntax"
+    ]
+}
