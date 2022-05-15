@@ -24,7 +24,8 @@ public class StartView {	// 접근제한이 없는 class 타입의 StartView 생
 		userReq = 66;	// 유저가 보내는 Req
 		try {
 			
-			boolean req = UserExceptionErr(userReq);
+			boolean req = UserExceptionErr(userReq);	// *try-catch 예외구문 사용할 때에는 try내에서 catch에 parameter로 줄 수
+														// 있도록 연관된 객체를 사용해야 한다. 예외를 catch할 타입이 없으면 compile불가. 
 				if(userReq == 1) {
 					System.out.println("--- 이름 검색 ---");
 					Controller.reqRes(userReq);
