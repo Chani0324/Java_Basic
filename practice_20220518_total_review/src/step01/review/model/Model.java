@@ -35,18 +35,22 @@ public class Model {
 	 * case 2 : 공격하는 유닛이 없을 경우 exception 호출
 	 */
 
-	public void attack(Unit unit) {
-		
+	public void attack(Unit unit) throws UserException{
+		int damagedHp = 0;
+		int cnt = 0;
+
 		for (Unit tp : unitList) {
 			if (tp.getClass().getName().equals("step01.review.model.dto.AttackUnit")) {
-				int damagedHp = unit.getUHp() - (((AttackUnit)tp).getUDamage() - unit.getUDef());
-
+				damagedHp = unit.getUHp() - (((AttackUnit)tp).getUDamage() - unit.getUDef());
+				cnt++;
 				if (damagedHp > 0) {
 					unit.setUHp(damagedHp);
 				} else {
 					unit.setUHp(0);
 				}
 			}
-		}//throw new UserException("부대 내에 공격유닛이 있는지 재확인 하세요.");
+		}if (cnt == 0) {
+			throw new UserException("부대 내에 공격 유닛이 없습니다.");
+		}
 	}
 }

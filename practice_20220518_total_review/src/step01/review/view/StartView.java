@@ -1,9 +1,6 @@
 package step01.review.view;
 
-import java.util.ArrayList;
-
 import step01.review.controller.Controller;
-import step01.review.model.Model;
 import step01.review.model.dto.AttackUnit;
 import step01.review.model.dto.Unit;
 

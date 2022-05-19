@@ -20,13 +20,13 @@ public class Controller {
 	
 	public static void attack(Unit unit) {
 		if(unit != null && unit.getUHp() > 0) {
-//			try {
+			try {
 				totalUnit.attack(unit);
 				SuccessView.successMessage("공격받은" + unit.getUName() + "의 체력이" + unit.getUHp() + "이(가) 되었습니다.");
-//			}catch(UserException e) {
-//				e.printStackTrace();
-//				FailView.printFail(e.getMessage()); 
-//			}
+			}catch(UserException e) {
+				e.printStackTrace();
+				FailView.printFail(e.getMessage()); 
+			}
 		}else {
 			FailView.printFail("공격받는 유닛이 있는지 재확인 하세요.");
 		}
