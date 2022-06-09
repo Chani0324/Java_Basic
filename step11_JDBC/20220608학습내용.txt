@@ -1,0 +1,121 @@
+학습 내용
+
+1. JDBC
+	- Java Database Connectivity
+	- DB연동 표준 API
+	
+2. 접속 DB별 통신 driver 필요
+	- 삼성 PC와 LG 프린트기 연동시 필요 선행 작업
+		- 삼성 PC에 LG에서 개발한 해당 프린트기 버전에 맞는 driver를 받아서 pc에 설치
+		- 프린트 드라이버 설치로 pc와 프린트기 연동
+			: java 개발자는 db의 접속 driver만 설치해 놓으면 db연동 개발
+			
+3. 사용 DB
+	- mysql db 시스템 있음
+	- java 개발 환경 설치되어 있음
+	
+4. 생각해보기
+	1. db연동 tool(dbeaver 등)
+		사용을 전제조건
+		1. mysql 설치 필수
+		2. mysql 실행
+		3. dbeaver 실행
+		4. dbeaver에 mysql만의 id.pw로 접속 시도
+			- 유효한 경우 접속 성공
+				5. sql문장 실행
+					select : 2차원 구조의 table 형식
+					insert : 레코드 입력에 대한 숫자값
+					update : 레코드 수정에 대한 숫자값
+					delete : 레코드 삭제에 대한 숫자값
+				- 무효한 경우 접속 실행
+				
+	2. end user는 브라우저로 사용하는 웹 기반의 서비스라 가정함.
+		사용이 된다라는 전제조건
+			1. mysql 설치 필수
+			2. mysql 실행
+			3. client가 가입 요청
+			4. 해당 로직의 자바 코드가 db접속시도
+				- 접속 성공(id/pw/URI(ip포함))
+					5. sql 문장 실행
+						- java code
+							insert - 레코드 입력에 대한 숫자값 java 코드로 받음
+				- 접속 실패
+				
+5. 코드 관점에서 생각해보기
+	- 발생 가능한 경우의 수
+	1. db driver 설치(로딩)
+		- 존재
+		- 미존재
+		
+		class.forName();
+		
+	2. db 접속
+		- 접속 성공
+		- 접속 실패
+		
+		connection getConnection(String url, String id, String pw)
+		
+	3. sql문장 실행
+		- 정상 실행
+			- 검색시 결과가 있음
+			- 검색시 결과가 없음
+		- 비정상 실행
+		
+		- 사전 정해진 sql문장 없이 sql문장 실행 객체 생성
+		Statement createStatement(){}
+			ResultSet executeQuery(String select){}
+			int executeUpdate(String dml){}
+			
+		- 사전에 고정된 sql문장으로 sql 실행 객체 생성
+		PreparedStatement prepareStatement(String sql){}
+			ResultSet executeQuery(){}
+			int executeUpdate(){}
+		
+	4. sql문장 실행 결과 활용
+		- select : 2차원 table 구조
+		- insert/update/delete : 영향을 받은 row 수
+		
+		ResultSet executeQuery(String select){}
+		int executeUpdate(String dml){}
+		
+	5. 더이상 사용하지 않는 db 자원들 반환
+		- close()
+	
+6. db연동 작업 단계
+	1단계 - driver 로딩(프로그램 설치)
+	2단계 - Connection 객체 생성
+	3단계 - Statement 객체 생성
+	4단계 - sql 문장 실행
+		select - ResultSet
+		dml - row 개수
+	5단계 - 자원반환
+	
+	질문 crud 개별 작업시에 공통된 개발 단계는 몇 단계까지?
+		1단계 ~ 3단계, 5단계는 공통
+		
+	sql문장에 따라 구분 필요 : 4단계
+	
+7. 문제
+	1. mysql에 다수 sql 실행시 왜 원활하지 않은지? 해결책은 무엇인지? (재부팅 방법 제외)
+		- 이유 : 테이블의 데이터들을 처리하는 양이 많아지면서 부하가 걸리다보니 쿼리 수행시간도 늘어나면서 
+				'lock wait timeout exceeded' 현상이 발생.
+				또한 Statement 사용 때마다 객체를 생성하여 부하 발생 -> PrepareStatement로 이전 캐시에 저장된 객체 재새용
+		
+		- 즉각 실행 방법 : process id를 kill 명령어를 통해 강제 종료해주는 방법이 있음.
+						show processlist; 
+						kill (process id);
+						
+		- 개선 방법
+			1) Lock을 발생시킨 쿼리의 관련 테이블에 Index 설정
+			2) 쿼리의 수행속도를 높여주기 위한 쿼리 튜닝
+			3) 월별 파티셔닝을 통한 테이블 분할
+		
+		- 참고
+			https://iamfreeman.tistory.com/entry/MySQL-%EC%8B%A4%ED%96%89%EC%A4%91%EC%9D%B8-%EC%BF%BC%EB%A6%AC-%ED%99%95%EC%9D%B8show-processlist-%EB%B0%8F-%EA%B0%95%EC%A0%9C%EC%A2%85%EB%A3%8Ckill-stop-%EB%B0%A9%EB%B2%95
+						
+	2. @Test 애노테이션 실행 순서?
+		- 실행 순서는 불명확함. Junit5 부터 명령어 추가로 @Test 실행순서를 정할 수 있음.
+		-
+		
+	
+	
