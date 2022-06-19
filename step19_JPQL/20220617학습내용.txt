@@ -1,0 +1,36 @@
+JPQL 학습내용
+
+1. Named Query
+	- entity sql문장 선언
+	- 사용하는 코드상에선 단순 이름으로 활용
+	- 정적 쿼리
+		미리 정의된 쿼리에 이름을 부여해서 필요할 경우 호출해서 사용
+		Entity 클래스가 메모리에 로딩시에 해당 sql 문장을 사전에 검증해서 사용 가능하게 대기해 놓는 상태(로딩)
+		혹여 문법 문제가 발생시에 사용자들이 호출전에도 확인 및 처리가 가능한 전처리 작업 수행
+		- 장점
+			빠른 오류 체크 & 효율적인 성능
+				Application 로딩 시점에 JPQL 문법 체크 후 미리 Parsing
+				사전이 이미 변환된(parsing)된 문장 사용으로 실행 속도 좋음
+				Database가 한번 실행된 SQL문장들은 사전에 캐싱 해 놓음
+	
+	
+2. 실습 table
+	- emp로부터 empno, ename, sal, deptno 만으로 employee table 생성
+		create table employee select empno, ename, sal, deptno from emp;
+		
+3. 실습 단계
+	1. table 구축
+		- 데이터 실시간 가변적
+	2. project 생성
+		- maven -> jpa library 포함
+	3. db 설정 후 persistence.xml 작업 마무리
+	
+	4. 개발
+		- entity -> biz -> view + controller 순으로 권장
+		
+4. 예외처리 기본 rule
+	1. 다수의 catch로 처리 시
+		child 타입 먼저 catch -> parent 타입
+	2. 타입 무관하게 모든 예외 처리를 하나의 catch로 처리시
+		Exception 즉 예외들의 상위 타입으로 처리
+	

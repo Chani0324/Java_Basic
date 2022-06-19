@@ -1,0 +1,15 @@
+의도
+
+1. 총 review + 친목 도모..?
+
+2. 주제
+	employee & department table crud
+	- emp와 dept table 기반으로 구조 고려
+	- 단 employee의 컬럼 : empno, ename, sal, deptno
+	
+3. 권장 사항
+	- 각 table 별 DAO 만들기(지금까지 검색, delete, update, insert 등등 한거 전부 DAO 내용임)
+	- MVC + DAO 적용 권장
+	
+
+	

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+
+	<!-- db별 설정하는 element(tag) -->
+	
+	<!-- 
+		xml 구성의 스펙은 이미 정해져 있음
+		1. name 속성 : java 소스 상에서 설정 정보를 사용할 수 있게 해주는 별칭.
+		
+		2. class tag : db상에서 table과 1:1 mapping되는 entity 클래스
+			- 멤버 변수가 column
+			- @Entity 선언된 클래스만 선언 가능.
+			
+		3. properties tag : 사용하고자 하는 db의 접속 정보
+			- property tag의 value 속성값들만 수정 가능
+			- hibernate.dialect name의 property tag의 value 값이 기능처리를 함.
+				- 각 db별 약간 차이가 나는 표현법들을 JPA 관점에선 통일화 필요
+					- 각 db에 맞게 최적화된 sql문장으로 가공 및 변환하는 API들 등록.
+				- 예시
+					mysql 상에서의 문자열 - varchar / oracle 상에서 문자열 varchar2
+				- mysql 8버전 처리 API : org.hibernate.dialect.MySQL8Dialect
+				- oracle 처리 API : org.hibernate.dialect.OracleDialect
+				- 장점 : db별 별도의 종속적인 자바 코드 개발의 불합리는 최소화.
+				
+			- hibernate.show_sql : true 설정 시 실행되는 sql문장 확인 가능
+			- hibernate.format_sql : true 설정 시 실행되는 sql문장에 가독성 적절히 고려해서 출력
+			- hibernate.use_sql_comments : 
+			- hibernate.hbm2ddl.auto 
+				- create 설정 시 table 을 drop, create 자동 실행. 주로 test 시에 설정
+				- none 설정 시 존재하는 table에 crud 작업만 진행하겠다는 설정. 주로 실제 서버 운영시에 설정
+	 -->
+	<persistence-unit name="mysqlDB">
+		
+		<!-- entity 클래스에 한해서만 등록하는 JPA tag  -->
+		<class>step01.entity.Customer</class>
+		<class>step01.entity.Member</class>
+			
+		<properties>
+			<!-- db접속 정보 설정 tag와  속성 -->
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/playdata?characterEncoding=UTF-8" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="playdata" />
+			
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect" />
+
+			<property name="hibernate.show_sql" value="true" />
+			
+			<property name="hibernate.format_sql" value="true" />
+			
+			<property name="hibernate.use_sql_comments" value="false" />
+			
+ 			<property name="hibernate.hbm2ddl.auto" value="none" />  
+			
+		</properties>
+		
+	</persistence-unit>
+	
+		<persistence-unit name="oracleDB">
+		
+		<!-- entity 클래스에 한해서만 등록하는 JPA tag  -->
+		<class>step01.entity.Customer</class>
+		<class>step01.entity.Member</class>
+			
+		<properties>
+			<!-- db접속 정보 설정 tag와  속성 -->
+			<property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@127.0.0.1:1521:xe" />
+			<property name="javax.persistence.jdbc.user" value="SCOTT" />
+			<property name="javax.persistence.jdbc.password" value="TIGER" />
+
+			<property name="hibernate.dialect" value="org.hibernate.dialect.OracleDialect" />
+
+
+			<property name="hibernate.show_sql" value="true" />
+			
+			<!--   <property name="hibernate.format_sql" value="true" />   -->
+			
+			<!-- entity와 sql 부연 설명 -->
+			<!--  <property name="hibernate.use_sql_comments" value="true" />  -->
+			
+			
+ 			<property name="hibernate.hbm2ddl.auto" value="create" />  
+			
+		</properties>
+	</persistence-unit>
+</persistence>

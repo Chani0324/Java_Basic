@@ -1,0 +1,46 @@
+join 학습
+
+[step02 실습] 
+- one to one 관계
+1. 생성된 sql 문장
+
+create table Team (
+	team_id bigint not null auto_increment, 
+	team_name varchar(255), 
+	primary key (team_id)
+) engine=InnoDB
+
+create table Member (
+	member_id bigint not null auto_increment, 
+	name varchar(10), 
+	team_id bigint, 
+	primary key (member_id)
+) engine=InnoDB
+
+alter table Member add constraint FK5nt1mnqvskefwe0nj9yjm4eav 
+foreign key (team_id) 
+references Team (team_id)
+
+
+2. alter 명령어가 생성된 설정
+	- Member entity
+	@OneToOne	
+	@JoinColumn(name="team_id")  
+	private Team teamId;
+
+3. 실습시 객체 생성 & join 되어 있는 참조 관계의 데이터값 설정 
+		Team t1 = new Team("북산");  
+			- team_id는 auto increment로 자동 1씩 증가
+			- 명시적으로 배구팀 값 저장
+		 
+		
+		Member m1 = new Member("강백호");  
+		m1.setTeamId(t1);  //team table의 team_id값을 자동 반영
+		
+			- 멤버 변수가 memberId/name/teamId
+			- memberId는 auto increment로 자동 1씩 증가
+			- name는 명시적으로 값 저장
+			- teamId는 Team 타입 즉 db의 실제 table과 연관된 entity 타입의 객체를 대입
+			단 실제 저장되어 활용되는 db의 데이터는 team table의 team_id값이 자동 반영되어
+			Member table의 team_id 컬럼에도 자동으로 team의 team_id값 저장
+			
